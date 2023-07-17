@@ -1,9 +1,9 @@
-class HeroesController < ApplicationController
+class Api::HeroesController < ApplicationController
   before_action :set_hero, only: [:show, :update, :destroy]
 
   # GET /heroes
   def index
-    @heroes = Hero.all
+    @heroes = Hero.all.sorted_by_name
 
     render json: @heroes
   end
@@ -18,7 +18,7 @@ class HeroesController < ApplicationController
     @hero = Hero.new(hero_params)
 
     if @hero.save
-      render json: @hero, status: :created, location: @hero
+      render json: @hero, status: :created, location: api_hero_path(@hero)
     else
       render json: @hero.errors, status: :unprocessable_entity
     end
